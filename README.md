@@ -8,8 +8,8 @@
 ## Build Fookbake-api
 
 ### Install pnpm (New package manager)
-
-npm i -g pnpm 
+```
+npm i -g pnpm  
 pnpm init 
 pnpm add express
 pnpm add dotenv
@@ -17,7 +17,7 @@ pnpm add cors
 pnpm add -D morgan  // D คือ devdepancies ที่ใช้ตอน dev
 pnpm add helmet
 pnpm add express-rate-limit
-
+```
 ### Add .gitignore
 touch .gitignore
 
@@ -134,3 +134,85 @@ fookbakeDB.dio
 
 pnpm add mysql2 
 pnpm add sequelize
+
+### Restructure sequelize  for read all config .env
+
+create
+.sequelizerc
+
+```
+const path = require('path')
+
+module.exports = {
+    config: path.resolve('src/config', 'database.js'),
+    'models-path': path.resolve('src', 'models')
+}
+```
+Then run
+
+sequelize init:config
+
+Will get
+
+📦src
+ ┣ 📂config
+ ┃ ┗ 📜database.js
+
+
+
+*จากเดิม คือใช้ config.json วิธีนี้จะทำให้อ่านค่า config ได้จาก .env แทน โดย อ่านผ่าน database.js
+
+
+##### config DB to .env
+
+```
+DB_USERNAME=root
+DB_PASSWORD=passw0rd
+DB_NAME=cc14_fakebuck
+DB_HOST=localhost
+```
+
+##### add require .env and module.exports    to  database.js
+```
+require('dotenv').config();
+
+module.exports = {
+  "development": {
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
+    "dialect": "mysql"
+  },
+```
+
+Create DB with sequelize db:create
+
+Result below
+```
+Loaded configuration file "src/config/database.js".
+Using environment "development".
+Database cc14_fakebuck created.
+```
+
+/usr/local/mysql/bin/mysql -u root -p 
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cc14_fakebuck      |
++--------------------+
+
+
+Create models with sequelize init:models
+
+📦models
+ ┗ 📜index.js
+
+ 
+Create user.js
+
+📦models
+ ┣ 📜index.js
+ ┗ 📜user.js

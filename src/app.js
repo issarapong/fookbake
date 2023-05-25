@@ -15,7 +15,7 @@ const app = express();
 //External Middleware ที่ต้องใช้
 
 // Mogan เช็ค Header log
-if(process.env.NODE_ENV === 'develop') {
+if(process.env.NODE_ENV === 'development') {
     app.use(morgan('combined'))   // morgan('combined')  morgan('dev')  check more https://www.npmjs.com/package/morgan
 }
 

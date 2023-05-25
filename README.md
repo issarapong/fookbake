@@ -148,17 +148,16 @@ module.exports = {
     'models-path': path.resolve('src', 'models')
 }
 ```
-Then run
 
-sequelize init:config
+Then create config run sequelize init:config
 
 Will get
-
+```
 📦src
  ┣ 📂config
  ┃ ┗ 📜database.js
 
-
+```
 
 *จากเดิม คือใช้ config.json วิธีนี้จะทำให้อ่านค่า config ได้จาก .env แทน โดย อ่านผ่าน database.js
 
@@ -218,3 +217,37 @@ Create user.js
  ┣ 📜index.js
  ┗ 📜user.js
  ```
+
+
+
+ paranoid sequelize  as Post.js
+
+
+All Models
+```
+ 📦models
+ ┣ 📜comment.js
+ ┣ 📜friend.js
+ ┣ 📜index.js
+ ┣ 📜like.js
+ ┣ 📜post.js
+ ┗ 📜user.js
+ ```
+
+ Create src/initialize/database.js  // สำหรับ synce Models ที่สร้างมาทั้งหมดเข้า mysql database
+
+ ```
+const { sequelize } = require('../models');
+
+sequelize.sync({force: true });  // Force: true บังคับดรอบทิ้ง
+ ```
+
+
+ Edit package.json
+ ```
+   "scripts": {
+    "db:sync": "node src/initialize/database.js"
+   }
+ ```
+
+ Then run pnpm db:sync

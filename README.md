@@ -196,23 +196,25 @@ Database cc14_fakebuck created.
 ```
 
 /usr/local/mysql/bin/mysql -u root -p 
-
+```
 mysql> show databases;
 +--------------------+
 | Database           |
 +--------------------+
 | cc14_fakebuck      |
 +--------------------+
-
+```
 
 Create models with sequelize init:models
-
+```
 📦models
  ┗ 📜index.js
 
- 
+ ```
 Create user.js
 
+```
 📦models
  ┣ 📜index.js
  ┗ 📜user.js
+ ```

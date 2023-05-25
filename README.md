@@ -1,4 +1,4 @@
-# Fookbake
+# Fookbake-Api 📗
 
 ## Project building
 1. Design Figma
@@ -121,3 +121,16 @@ app.listen(port, () =>
 console.log('Server running on port' + port))
 
 ````
+
+## Design Database
+
+```
+fookbakeDB.dio
+
+```
+
+
+### Install  Database Library
+
+pnpm add mysql2 
+pnpm add sequelize

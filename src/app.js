@@ -23,8 +23,8 @@ if(process.env.NODE_ENV === 'develop') {
 //จำกัดการ request
 app.use(rateLimit({
     windowMs: 1000 * 60 * 15,
-    max: 1000,
-    message: { message : 'too many requests'}
+    max: 10,
+    message: { message : 'too many requests 😠'}
 })
 )
 

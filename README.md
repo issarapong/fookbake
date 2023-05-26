@@ -17,6 +17,9 @@ pnpm add cors
 pnpm add -D morgan  // D คือ devdepancies ที่ใช้ตอน dev
 pnpm add helmet
 pnpm add express-rate-limit
+pnpm add joi
+pnpm add bcryptjs
+pnpm add jsonwebtoken
 ```
 ### Add .gitignore
 touch .gitignore
@@ -251,3 +254,159 @@ sequelize.sync({force: true });  // Force: true บังคับดรอบ�
  ```
 
  Then run pnpm db:sync
+
+
+ ##### create
+/src/routes/auth-route.js
+
+```
+const express = require('express')
+
+
+const authController = require('../controllers/auth-controller')
+
+const router = express.Router();
+
+router.post('/register', authController.register)
+
+module.exports = router;
+
+```
+##### import to app.js
+
+```
+require('dotenv').config();
+const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
+
+const authRoute = require('./routes/auth-route')
+
+const notFoundMiddleware = require('./middlewares/not-found')
+const errorMiddleware = require ('./middlewares/error')
+
+const app = express();
+
+
+
+//External Middleware ที่ต้องใช้
+
+// Mogan เช็ค Header log
+if(process.env.NODE_ENV === 'development') {
+    app.use(morgan('combined'))   // morgan('combined')  morgan('dev')  check more https://www.npmjs.com/package/morgan
+}
+
+
+//จำกัดการ request
+app.use(rateLimit({
+    windowMs: 1000 * 60 * 15,
+    max: 10,
+    message: { message : 'too many requests 😠'}
+})
+)
+
+
+app.use(helmet())  // set response Header ให้ อัตโนมัติ
+app.use(cors());
+app.use(express.json());  // แปลง String ที่อยู่ใน format json ให้เป็นรูปแบบ Obj
+
+
+app.use('/auth', authRoute);
+
+
+
+//Internal Middleware
+app.use(errorMiddleware)
+app.use(notFoundMiddleware)
+
+
+const port = process.env.PORT || 8000
+app.listen(port, () =>
+console.log('Server running on port' + port))
+```
+
+##### create src/controllers/auth-controller.js
+
+```
+const { validateRegister } = require('../validators/auth-validator');
+
+exports.register = async (req, res, next) => {
+  try {
+    // 1.validate
+    const { value, error } = validateRegister(req.body);
+    if (error) {
+      res.status(400).json({ message: error.details[0].message });
+    }
+    // 2.hash password
+    // 3.insert to users table
+    // 4.sign token and sent response
+  } catch (err) {
+    next(err);
+  }
+};
+```
+
+
+##### Joi Validate
+
+src/validators/auth-validator.js
+
+```
+const Joi = require('joi');
+
+const registerSchema = Joi.object({
+  firstName: Joi.string().trim().required(),
+  lastName: Joi.string().trim().required(),
+  emailOrMobile: Joi.alternatives([
+    Joi.string().email({ tlds: false }),
+    Joi.string().pattern(/^[0-9]{10}$/)
+  ]),
+  password: Joi.string()
+    .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .trim()
+    .required(),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).trim().required()
+});
+
+exports.validateRegister = input => registerSchema.validate(input);
+```
+
+##### Import to
+
+
+
+##### create src/utils/create-error.js
+
+```
+
+```
+/src/services/user-service.js
+
+```
+
+```
+
+
+/src/repositories/user-repository.js
+
+```
+const { Op} =require('sequelize')
+
+const { User } = require('../models')
+
+exports.getUserByEmailMobile = emailOrMobile => {
+
+   User.findOne({ 
+        where: {
+            [Op.or]: [{ email: emailOrMobile }, { mobile: emailOrMobile}]
+        }
+    })
+
+```
+create
+/src/services/bcrypt-service.js
+create
+
+/src/services/token-service.js

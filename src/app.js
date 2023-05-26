@@ -5,6 +5,8 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 
+const authRoute = require('./routes/auth-route')
+
 const notFoundMiddleware = require('./middlewares/not-found')
 const errorMiddleware = require ('./middlewares/error')
 
@@ -32,6 +34,9 @@ app.use(rateLimit({
 app.use(helmet())  // set response Header ให้ อัตโนมัติ
 app.use(cors());
 app.use(express.json());  // แปลง String ที่อยู่ใน format json ให้เป็นรูปแบบ Obj
+
+
+app.use('/auth', authRoute);
 
 
 

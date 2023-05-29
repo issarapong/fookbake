@@ -8,3 +8,10 @@ exports.checkEmailOrMobileExist = emailOrMobile => {
 };
 
 exports.createUser = user => userRepository.createUser(user);
+
+exports.getUserByEmailMobile = async (emailOrMobile) => {
+    
+ const user = userRepository.getUserByEmailMobile(emailOrMobile);
+ return user;
+
+}

@@ -6,13 +6,14 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 
 const authRoute = require('./routes/auth-route')
+const userRoute = require('./routes/user-route')
 
 const notFoundMiddleware = require('./middlewares/not-found')
 const errorMiddleware = require ('./middlewares/error')
 
 const app = express();
 
-
+app.use(cors());
 
 //External Middleware ที่ต้องใช้
 
@@ -25,19 +26,20 @@ if(process.env.NODE_ENV === 'development') {
 //จำกัดการ request
 app.use(rateLimit({
     windowMs: 1000 * 60 * 15,
-    max: 10,
+    max: 1000,
     message: { message : 'too many requests 😠'}
 })
 )
 
-
-app.use(helmet())  // set response Header ให้ อัตโนมัติ
 app.use(cors());
+app.use(helmet())  // set response Header ให้ อัตโนมัติ
+
 app.use(express.json());  // แปลง String ที่อยู่ใน format json ให้เป็นรูปแบบ Obj
+//app.use(express.urlencoded({ extended: false }))  การใช้ app.use ลักษณะนี้ ใช้กับ พวก เว็บแบบ Moonolit
 
 
 app.use('/auth', authRoute);
-
+app.use('/users', userRoute);
 
 
 //Internal Middleware

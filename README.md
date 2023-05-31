@@ -20,6 +20,7 @@ pnpm add express-rate-limit
 pnpm add joi
 pnpm add bcryptjs
 pnpm add jsonwebtoken
+pnpm add multer
 ```
 ### Add .gitignore
 touch .gitignore
@@ -410,3 +411,21 @@ create
 create
 
 /src/services/token-service.js
+
+
+
+## Get Profile
+
+/src/middlewares/authenticate.js
+
+
+## File upload
+//multer middleware upload 
+/src/middlewares/upload.js
+
+## create
+/src/routes/user-route.js  and import to app.js
+
+## create /src/initialize
+
+/public/images

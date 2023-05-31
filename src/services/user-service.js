@@ -15,3 +15,5 @@ exports.getUserByEmailMobile = async (emailOrMobile) => {
  return user;
 
 }
+
+exports.getUserById = id => userRepository.getUserById(id)

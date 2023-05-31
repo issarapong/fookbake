@@ -1,0 +1,15 @@
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+   // console.log(file);
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().getTime() + "" + Math.round(Math.random()) * 100000 +
+      "." +
+      file.mimetype.split("/")[1]); // ใช้ Time ตั้งชื่อไฟล์ บวก random
+  },
+});
+
+module.exports = multer({ storage }); //fileFilter , fieldSize

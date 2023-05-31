@@ -21,6 +21,7 @@ pnpm add joi
 pnpm add bcryptjs
 pnpm add jsonwebtoken
 pnpm add multer
+pnpm add cloudinary
 ```
 ### Add .gitignore
 touch .gitignore
@@ -429,3 +430,36 @@ create
 ## create /src/initialize
 
 /public/images
+
+## API cloudinary
+## create cloudinary.js
+
+```
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+module.exports = cloudinary;
+```
+
+import to user-controller.js
+
+```
+const cloudinary = require('../config/cloudinary')
+
+exports.uploadImage = async ( req, res, next) => {
+    try {
+    //console.log(req.file) // single
+    console.log(req.files)  // array
+    cloudinary.uploader.upload()
+    } catch (err) {
+        next(err)
+    }
+}
+```
+src/services/upload-service.js

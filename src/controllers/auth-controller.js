@@ -41,7 +41,7 @@ exports.login = async (req, res, next) => {
 
   try {
      const value = validateLogin(req.body)
-     const user = await userService.getUserByEmailMobile(value.emailOrMobile)
+     const user = await userService.getUserByEmailOrMobile(value.emailOrMobile)
      if(!user) {
       createError('invalid credential', 400)
      }

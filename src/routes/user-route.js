@@ -14,4 +14,9 @@ router.patch(
   ]),
   userController.uploadImage
 ); //fields คือ upload ได้หลาย key maxCount คือ limit file
+
+
+ router.get('/:id/profile', authenticate, userController.getUserProfile);
+
+
 module.exports = router;

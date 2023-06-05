@@ -9,10 +9,10 @@ exports.uploadImage = async (req, res, next) => {
     //console.log(req.file) // single
     console.log(req.files); // array
     if (!req.files.profileImage && !req.files.coverImage) {
-      createError('profile image or cover image is required');
+      createError('profile image or cover requird');
     }
-
     const updateValue = {};
+
     if (req.files.profileImage) {
       const result = await uploadService.upload(req.files.profileImage[0].path);
       updateValue.profileImage = result.secure_url;
@@ -41,16 +41,16 @@ exports.getUserProfile = async (req, res, next) => {
   try {
     //get user
     const user = await User.findOne({
-      where: { id: req.params.id },
-      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+      Where: { id: req.params.id },
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     });
 
     const friends = await friendService.getFriendsByUserId(req.params.id);
-    const statusWithAuthenticatedUser =
-      await friendService.getStatusWithTargetUserByUserId(
-        req.user.id,
-        req.params.id
-      );
+    const statusWithAuthenticatedUser = 
+    await friendService.getStatusWithTargetUserByUserId(
+      req.user.id,
+      req.params.id
+    )
 
     await res.status(200).json({ user, friends, statusWithAuthenticatedUser });
   } catch (err) {

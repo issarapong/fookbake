@@ -398,7 +398,7 @@ const { Op} =require('sequelize')
 
 const { User } = require('../models')
 
-exports.getUserByEmailMobile = emailOrMobile => {
+exports.getUserByEmailOrMobile= emailOrMobile => {
 
    User.findOne({ 
         where: {
@@ -463,3 +463,16 @@ exports.uploadImage = async ( req, res, next) => {
 }
 ```
 src/services/upload-service.js
+
+
+## GEt Any user profile
+/src/routes/user-route.js
+```
+ router.get('/:id/profile', authenticate, userController.getUserProfile);`
+ ```
+
+/src/routes/friend-route.js
+
+
+
+/src/routes/post-route.js

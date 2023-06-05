@@ -2,16 +2,16 @@ const userRepository = require('../repositories/user-repository')
 
 exports.checkEmailOrMobileExist = emailOrMobile => {
 
-    const existUser = userRepository.getUserByEmailMobile(emailOrMobile)
+    const existUser = userRepository.getUserByEmailOrMobile(emailOrMobile)
     return !!existUser;
 
 };
 
 exports.createUser = user => userRepository.createUser(user);
 
-exports.getUserByEmailMobile = async (emailOrMobile) => {
+exports.getUserByEmailOrMobile = async (emailOrMobile) => {
     
- const user = userRepository.getUserByEmailMobile(emailOrMobile);
+ const user = userRepository.getUserByEmailOrMobile(emailOrMobile);
  return user;
 
 }

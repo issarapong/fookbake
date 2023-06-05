@@ -7,9 +7,13 @@ const rateLimit = require('express-rate-limit')
 
 const authRoute = require('./routes/auth-route')
 const userRoute = require('./routes/user-route')
+const friendRoute = require('./routes/friend-route') 
+const postRoute = require('./routes/post-route')
 
 const notFoundMiddleware = require('./middlewares/not-found')
 const errorMiddleware = require ('./middlewares/error')
+const authenticate = require('./middlewares/authenticate')
+
 
 const app = express();
 
@@ -31,7 +35,7 @@ app.use(rateLimit({
 })
 )
 
-app.use(cors());
+//app.use(cors());
 app.use(helmet())  // set response Header ให้ อัตโนมัติ
 
 app.use(express.json());  // แปลง String ที่อยู่ใน format json ให้เป็นรูปแบบ Obj
@@ -40,7 +44,8 @@ app.use(express.json());  // แปลง String ที่อยู่ใน for
 
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
-
+app.use('/friends', authenticate, friendRoute)
+app.use('/posts', authenticate, postRoute)
 
 //Internal Middleware
 app.use(errorMiddleware)
